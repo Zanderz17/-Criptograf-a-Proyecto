@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS users (
+  id          BIGSERIAL PRIMARY KEY,
+  email       TEXT UNIQUE NOT NULL,
+  password_h  TEXT NOT NULL,
+  created_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS vaults (
+  user_id     BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  blob        BYTEA NOT NULL,
+  etag        TEXT NOT NULL,
+  version     BIGINT NOT NULL DEFAULT 1,
+  updated_at  TIMESTAMPTZ DEFAULT NOW()
+);
